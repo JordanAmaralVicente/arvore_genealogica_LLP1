@@ -4,7 +4,8 @@
 #include<time.h>
 
 //definição das funções
-int cadastrapessoas();
+int cadastraPessoas();
+int cadastraParentesco();
 int menu();
 // structs 
 typedef struct pessoa{
@@ -25,9 +26,11 @@ int main(){
 	while(op != 0){
 		switch (op){
 			case 1:
-				cadastrapessoas();
+				cadastraPessoas();
 			break;
-		
+			case 2:
+				cadastraParentesco();
+			break;
 			default:
 				printf("** OPÇÃO INVÁLIDA **");
 			break;
@@ -37,23 +40,23 @@ int main(){
 	return 0;
 }
 
-int cadastrapessoas(){
+int cadastraPessoas(){
 	FILE *ARQ_pessoas = fopen("pessoas.txt", "a");
 	pessoa p;
 
 	if(ARQ_pessoas == NULL)
 		return 0;
 
-	printf("\nDigite seu ID >>");
+	printf("\nDigite seu ID\n>>");
 	scanf("%d", &p.id);
-	printf("Digite seu NOME >>");
+	printf("Digite seu NOME\n>>");
 	scanf("%s", p.nome);
-	printf("Digite sua DATA DE NASCIMENTO>>");
+	printf("Digite sua DATA DE NASCIMENTO\n>>");
 	scanf("%s", p.dataNasc);
-	printf("Digite sua NATURALIDADE >>");
+	printf("Digite sua NATURALIDADE\n>>");
 	scanf("%s", p.naturalidade);
 
-	fprintf(ARQ_pessoas, "%d %s %s %s\n", p.id, p.nome, p.dataNasc, p.naturalidade);
+	fprintf(ARQ_pessoas, "%d; %s; %s; %s;\n", p.id, p.nome, p.naturalidade, p.dataNasc);
 	
 	printf("* PESSOA CADASTRADA COM SUCESSO *\n");
 
@@ -76,4 +79,22 @@ int menu(){
 	int n;
 	scanf("%d", &n);
 	return n;
+}
+
+int cadastraParentesco(){
+	parentesco p;
+	printf("Digite o ID da pessoa 1\n>>");
+	scanf("%d", &p.pessoa_1);
+	printf("Digite o ID da pessoa 2\n>>");
+	scanf("%d", &p.pessoa_2);
+	printf("\nDigite a relação de pessoa 1 -> pessoa 2\n>>");
+	scanf("%s", &p.tipo);
+
+	FILE *ARQ_parentesco = fopen("parentesco.txt", "a");
+	if(ARQ_parentesco == NULL)
+		return 0;
+
+	fprintf(ARQ_parentesco, "%d; %d; %s;\n", p.pessoa_1, p.pessoa_2, p.tipo);
+	fclose(ARQ_parentesco);
+	return 1;
 }
